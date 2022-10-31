@@ -1,13 +1,27 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./App.css";
 import { RootState } from "./app/store";
+import CustomerCard from "./componets/CustomerCard";
 import ReservationCard from "./componets/ReservationCard";
+import { addReservation } from "./features/reservationSlice";
 
 
 function App() {
 
+  const [reservationNameInput, setReservationNameInput] = useState('')
+
 const reservations = useSelector((state: RootState) => state.reservations.value)
+
+const customers = useSelector((state: RootState) => state.customer.value)
+
+const dispatch = useDispatch()
+
+const handleAddReservation = () => {
+ if (!reservationNameInput) return ;
+ dispatch(addReservation(reservationNameInput))
+ setReservationNameInput('')
+}
 
   return (
     <div className="App">
@@ -16,27 +30,21 @@ const reservations = useSelector((state: RootState) => state.reservations.value)
           <div>
             <h5 className="reservation-header">Reservations</h5>
             <div className="reservation-cards-container">
-             {reservations.map(name => {
-              return <ReservationCard name={name}/>
+             {reservations.map((name, index) => {
+              return <ReservationCard name={name} index={index}/>
              })}
             </div>
           </div>
           <div className="reservation-input-container">
-            <input />
-            <button>Add</button>
+          <input value={reservationNameInput} onChange={(e) => setReservationNameInput(e.target.value)}/>
+                <button onClick={handleAddReservation}>Add</button>
+            
           </div>
         </div>
         <div className="customer-food-container">
-          <div className="customer-food-card-container">
-            <p>Selena Gomez</p>
-            <div className="customer-foods-container">
-              <div className="customer-food"></div>
-              <div className="customer-food-input-container">
-                <input />
-                <button>Add</button>
-              </div>
-            </div>
-          </div>
+       {customers.map(customer => {
+        return <CustomerCard id={customer.id} name={customer.name} food={customer.food}/>
+       })}
         </div>
       </div>
     </div>
