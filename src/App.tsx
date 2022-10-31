@@ -17,7 +17,7 @@ const reservations = useSelector((state: RootState) => state.reservations.value)
             <h5 className="reservation-header">Reservations</h5>
             <div className="reservation-cards-container">
              {reservations.map(name => {
-              return <ReservationCard name={name}/>>
+              return <ReservationCard name={name}/>
              })}
             </div>
           </div>
